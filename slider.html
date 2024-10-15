@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Nike Classics Slider</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Helvetica', Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .slider-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .slide {
+            flex: 0 0 calc(20% - 16px);
+            margin: 0 8px;
+            background-color: #000;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slide img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .slide-label {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background-color: #fff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 24px;
+            z-index: 10;
+            user-select: none;
+        }
+
+        .arrow-left {
+            left: 10px;
+            color: #000;
+        }
+
+        .arrow-right {
+            right: 10px;
+            color: #000;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                flex: 0 0 calc(33.333% - 16px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .slide {
+                flex: 0 0 calc(50% - 16px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Shop by Classics</h2>
+        <div class="slider-container">
+            <div class="slider">
+                <div class="slide">
+                    <img src="https://static.nike.com/a/images/f_auto/dpr_2.0,cs_srgb/w_1001,c_limit/52cc5902-5fed-4320-8776-0c1161c978c9/nike-just-do-it.jpg" alt="Air Force 1">
+                </div>
+                <div class="slide">
+                    <img src="https://static.nike.com/a/images/f_auto/dpr_2.0,cs_srgb/w_1001,c_limit/d349028a-633e-4d26-bedc-1d20062edb82/nike-just-do-it.jpg" alt="Vomero">
+                </div>
+                <div class="slide">
+                    <img src="https://static.nike.com/a/images/f_auto/dpr_2.0,cs_srgb/w_1001,c_limit/be5fa28d-45c2-45b5-a60f-c698163aee18/nike-just-do-it.jpg" alt="Cortez">
+                    
+                </div>
+                <div class="slide">
+                    <img src="https://static.nike.com/a/images/f_auto/dpr_2.0,cs_srgb/w_1001,c_limit/5f3cbf3a-61d7-4a71-a9cf-2f7679eefae1/nike-just-do-it.jpg" alt="Air Max">
+                    
+                </div>
+                <div class="slide">
+                    <img src="https://static.nike.com/a/images/f_auto/dpr_2.0,cs_srgb/w_1001,c_limit/a75d42ee-6142-4024-98ef-b6ed4c90909a/nike-just-do-it.jpg" alt="Blazer">
+                    
+                </div>
+                <div class="slide">
+                    <img src="https://static.nike.com/a/images/f_auto/dpr_2.0,cs_srgb/w_1001,c_limit/68f314a7-ad74-477e-840b-c0a1ef00a49b/nike-just-do-it.jpg" alt="Vomero">
+                </div>
+                <!-- Add more slides as needed -->
+            </div>
+            <div class="arrow arrow-left"><i class="fa-solid fa-angle-left"></i></div>
+            <div class="arrow arrow-right"><i class="fa-solid fa-angle-right"></i></div>
+        </div>
+    </div>
+
+    <script>
+        const slider = document.querySelector('.slider');
+        const leftArrow = document.querySelector('.arrow-left');
+        const rightArrow = document.querySelector('.arrow-right');
+        const slides = document.querySelectorAll('.slide');
+        const slideWidth = slides[0].offsetWidth + 16; // Include margin
+        const visibleSlides = 5;
+        let currentIndex = 0;
+
+        function moveSlider(direction) {
+            if (direction === 'left') {
+                currentIndex--;
+                if (currentIndex < 0) {
+                    currentIndex = slides.length - visibleSlides;
+                }
+            } else {
+                currentIndex++;
+                if (currentIndex > slides.length - visibleSlides) {
+                    currentIndex = 0;
+                }
+            }
+            updateSliderPosition();
+        }
+
+        function updateSliderPosition() {
+            slider.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+        }
+
+        leftArrow.addEventListener('click', () => moveSlider('left'));
+        rightArrow.addEventListener('click', () => moveSlider('right'));
+
+        // Clone slides for seamless looping
+        const slidesToClone = visibleSlides;
+        for (let i = 0; i < slidesToClone; i++) {
+            const clone = slides[i].cloneNode(true);
+            slider.appendChild(clone);
+        }
+        for (let i = slides.length - 1; i >= slides.length - slidesToClone; i--) {
+            const clone = slides[i].cloneNode(true);
+            slider.insertBefore(clone, slider.firstChild);
+        }
+
+        // Adjust initial position
+        currentIndex = slidesToClone;
+        updateSliderPosition();
+    </script>
+</body>
+</html>
